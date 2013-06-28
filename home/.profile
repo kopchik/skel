@@ -182,7 +182,7 @@ for x in `seq $t -1 0`; do echo -n "$x "; sleep 1; done && mplayer -af volume=-1
 
 
 #LOCAL TUNING
-if [ "`hostname`" == "dhcp089" ]; then
+if [ "$HOSTNAME" == "dhcp089" ]; then
     PROXY="http://proxy.science.unitn.it:3128/"
     export http_proxy=$PROXY
     export ftp_proxy=$PROXY
