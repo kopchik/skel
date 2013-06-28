@@ -1,0 +1,18 @@
+[user]
+name = Alexandre Kandalintsev
+email = spam@messir.net
+[push]
+default = simple
+[color]
+ui = true
+
+[alias]
+co = checkout
+ci = commit
+st = status
+br = branch
+hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
+type = cat-file -t
+dump = cat-file -p
+glog = log --graph
+
