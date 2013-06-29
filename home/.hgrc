@@ -1,0 +1,24 @@
+[ui]
+username = Alexandre Kandalintsev <spam@messir.net>
+
+[extensions]
+hgext.extdiff =
+hgext.mq =
+hgext.pager =
+hgext.graphlog =
+hgext.largefiles =
+color =
+rebase=
+
+[extdiff]
+cmd.ediff  = git
+opts.ediff = diff --color-words
+cmd.dwdiff  = dwdiff
+opts.dwdiff = -c
+
+[pager]
+pager = less -F -L -M -X -R
+ignore = push, pull, fpull, fpush
+
+[ui]
+merge = internal:merge
