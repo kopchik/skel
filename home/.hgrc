@@ -6,9 +6,11 @@ hgext.extdiff =
 hgext.mq =
 hgext.pager =
 hgext.graphlog =
-hgext.largefiles =
 color =
 rebase=
+purge =
+largefiles =
+record =
 
 [extdiff]
 cmd.ediff  = git
@@ -22,3 +24,11 @@ ignore = push, pull, fpull, fpush
 
 [ui]
 merge = internal:merge
+
+[largefiles]
+patterns = *.jpg *.png *.gif *.jpg *.jpeg *.xcf *.eps *.pdf *.dvi *.zip *.svg bottle.py *.odt *.odp *.doc *.docx *.rtf *.swf *.pickle
+minsize = 0.1
+
+#[alias]
+#__mystatus = status
+#st = !hg __mystatus $($HG root) $HG_ARGS
