@@ -224,7 +224,7 @@ else
 fi
 
 if [ $UID == 0 ]; then
-    ptr="\[${txred}\]#>>\[${txtrst}\] ";
+    ptr="\[${txtred}\]#>>\[${txtrst}\] ";
 else
     ptr=">> ";
 fi
