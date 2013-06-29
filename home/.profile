@@ -1,6 +1,10 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+# FINE TUNNING
+#set * to match all files
+shopt -s dotglob
+
 #PROGRAMS TUNNING
 export PATH=~/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 export JAVA_HOME=${JAVA_HOME:-/usr/lib/jvm/java-7-openjdk/jre}
@@ -12,14 +16,6 @@ export PAGER=`which less`
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-#PROMPT
-#export PS1="\e[0;34m\h@\W\$\e[m "
-#export PS1="\h@\W\$ "
-#export PS1="┌─[\t]─[\u@\h]\n└──> \w \$ >> "
-export PS1="[\u@\h] \w\$ "
-
-#set * to match all files
-shopt -s dotglob
 
 #HISTORY
 HISTSIZE=10000
@@ -51,16 +47,13 @@ fi
 
 #ALIASES
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+
 alias mystrace='strace -s 256 -f -o /tmp/mystrace'
-
 alias psl='ps auxww --sort=lstart | sort -r -k3,4 | head -20'
-
 alias mes="ssh exe@messir.net -p26000"
-alias mymail="xhost +local:mymail; sudo -H -u mymail ecryptfs-mount-private; sudo -H -u mymail claws-mail"
 
 #alias skype="xhost +local:skype; sudo -H -u skype skype"
 #alias skype="xhost +local:skype; sudo -H -u skype ecryptfs-mount-private; sudo -H -u skype skype"
@@ -85,7 +78,6 @@ alias hpc="cd ~exe/repos/crm/utilz/hpc_bencher/"
 alias p="sudo ping -n -s 100 -i0.1"
 alias abslinux="cd /home/sources/abs/testing/linux/src/"
 alias iwscan="sudo iwlist scan | less"
-b() { echo $1 | sudo tee /sys/class/backlight/acpi_video0/brightness; }
 
 
 
@@ -176,15 +168,89 @@ echo $MACADDR
 
 
 countdown() {
-t=$1
-for x in `seq $t -1 0`; do echo -n "$x "; sleep 1; done && mplayer -af volume=-10 ~/Downloads/beep-8.mp3
+  t=$1
+  for x in `seq $t -1 0`; do echo -n "$x "; sleep 1; done && mplayer -af volume=-10 ~/Downloads/beep-8.mp3
 }
+
+
+##########
+# COLORS #
+##########
+# colors from https://wiki.archlinux.org/index.php/Color_Bash_Prompt
+txtblk='\e[0;30m' # Black - Regular
+txtred='\e[0;31m' # Red
+txtgrn='\e[0;32m' # Green
+txtylw='\e[0;33m' # Yellow
+txtblu='\e[0;34m' # Blue
+txtpur='\e[0;35m' # Purple
+txtcyn='\e[0;36m' # Cyan
+txtwht='\e[0;37m' # White
+bldblk='\e[1;30m' # Black - Bold
+bldred='\e[1;31m' # Red
+bldgrn='\e[1;32m' # Green
+bldylw='\e[1;33m' # Yellow
+bldblu='\e[1;34m' # Blue
+bldpur='\e[1;35m' # Purple
+bldcyn='\e[1;36m' # Cyan
+bldwht='\e[1;37m' # White
+unkblk='\e[4;30m' # Black - Underline
+undred='\e[4;31m' # Red
+undgrn='\e[4;32m' # Green
+undylw='\e[4;33m' # Yellow
+undblu='\e[4;34m' # Blue
+undpur='\e[4;35m' # Purple
+undcyn='\e[4;36m' # Cyan
+undwht='\e[4;37m' # White
+bakblk='\e[40m'   # Black - Background
+bakred='\e[41m'   # Red
+bakgrn='\e[42m'   # Green
+bakylw='\e[43m'   # Yellow
+bakblu='\e[44m'   # Blue
+bakpur='\e[45m'   # Purple
+bakcyn='\e[46m'   # Cyan
+bakwht='\e[47m'   # White
+txtrst='\e[0m'    # Text Reset
+
+##########
+# PROMPT #
+##########
+
+#useful variables for PS1
+#from https://gist.github.com/wyattanderson/1264760
+if [[ $TERM =~ "256color" ]]; then
+    host_color="38;5;$((16 + $(echo $HOSTNAME | cksum | cut -c1-3) % 256))";
+else
+    host_color="1;$((31 + $(echo $HOSTNAME | cksum | cut -c1-3) % 6))";
+fi
+
+if [ $UID == 0 ]; then
+    ptr="\[${txred}\]#>>\[${txtrst}\] ";
+else
+    ptr=">> ";
+fi
+
+host="\[\033[${host_color}m\]\h\[$txtrst\]"
+reset="\[$txtrst\]"  # reset colors
+
+status() {
+  if [ $? == 0 ]; then
+    echo -e "${txtgrn}[$?]${txtrst}"
+  else
+    echo -e "${txtred}[$?]${txtrst}"
+  fi
+}
+
+#export PS1="\e[0;34m\h@\W\$\e[m "
+#export PS1="\h@\W\$ "
+#export PS1="┌─[\t]─[\u@\h]\n└──> \w \$ >> "
+#export PS1="[\u@\h] \w\$ "
+PS1="$reset┌─\$(status)─[\t]─[\u@$host]\n└──> \w $ptr"
 
 
 #LOCAL TUNING
 if [ "$HOSTNAME" == "dhcp089" ]; then
-    PROXY="http://proxy.science.unitn.it:3128/"
-    export http_proxy=$PROXY
-    export ftp_proxy=$PROXY
-    export https_proxy=$PROXY
+  PROXY="http://proxy.science.unitn.it:3128/"
+  export http_proxy=$PROXY
+  export ftp_proxy=$PROXY
+  export https_proxy=$PROXY
 fi
