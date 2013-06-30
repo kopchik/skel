@@ -24,13 +24,6 @@ HISTIGNORE='rm *'
 shopt -s histappend
 
 
-#SSH AGENT
-export SSH_AUTH_SOCK=~/.ssh/ssh-agent
-ssh-add -l 2>&1 >/dev/null #return status 2 is if ssh-add is unable to contact the authentication agent
-if [ $? == 2 ]; then
-    pkill -TERM -u $(whoami) -x ssh-agent
-    echo "starting ssh-agent"; rm -f $SSH_AUTH_SOCK; eval `/usr/bin/ssh-agent -a $SSH_AUTH_SOCK`;
-fi
 
 
 #CHANGE CWD TO HOMEDIR. Workarround for ubuntu bug with working dir in
@@ -253,4 +246,14 @@ if [ "$HOSTNAME" == "dhcp089" ]; then
   export http_proxy=$PROXY
   export ftp_proxy=$PROXY
   export https_proxy=$PROXY
+fi
+
+if [ "$HOSTNAME" == "ux32vd" ]; then
+    #SSH AGENT
+    export SSH_AUTH_SOCK=~/.ssh/ssh-agent
+    ssh-add -l 2>&1 >/dev/null #return status 2 is if ssh-add is unable to contact the authentication agent
+    if [ $? == 2 ]; then
+        pkill -TERM -u $(whoami) -x ssh-agent
+        echo "starting ssh-agent"; rm -f $SSH_AUTH_SOCK; eval `/usr/bin/ssh-agent -a $SSH_AUTH_SOCK`;
+    fi
 fi
