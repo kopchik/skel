@@ -211,15 +211,15 @@ txtrst='\e[0m'    # Text Reset
 #useful variables for PS1
 #from https://gist.github.com/wyattanderson/1264760
 if [[ $TERM =~ "256color" ]]; then
-    host_color="38;5;$((16 + $(echo $HOSTNAME | cksum | cut -c1-3) % 256))";
+    host_color="38;5;$((16 + $(echo $HOSTNAME | cksum | cut -c8-10) % 256))";
 else
-    host_color="1;$((31 + $(echo $HOSTNAME | cksum | cut -c1-3) % 6))";
+    host_color="1;$((31 + $(echo $HOSTNAME | cksum | cut -c8-10) % 6))";
 fi
 
 if [ $UID == 0 ]; then
-    ptr="\[${txtred}\]#>>\[${txtrst}\] ";
+    ptr="\[${txtred}\]#\[${txtrst}\] ";
 else
-    ptr=">> ";
+    ptr="> ";
 fi
 
 host="\[\033[${host_color}m\]\h\[$txtrst\]"
@@ -227,7 +227,8 @@ reset="\[$txtrst\]"  # reset colors
 
 status() {
   if [ $? == 0 ]; then
-    echo -e "${txtgrn}[$?]${txtrst}"
+    #echo -e "${txtgrn}[$?]${txtrst}"
+    echo
   else
     echo -e "${txtred}[$?]${txtrst}"
   fi
@@ -237,10 +238,13 @@ status() {
 #export PS1="\h@\W\$ "
 #export PS1="┌─[\t]─[\u@\h]\n└──> \w \$ >> "
 #export PS1="[\u@\h] \w\$ "
-PS1="$reset┌─\$(status)─[\t]─[\u@$host]\n└──> \w $ptr"
+PS1="$reset┌─\$(status)─[\t]─[\u@$host]─[\w]\n└──$ptr"
 
 
-#LOCAL TUNING
+##########################
+# HOST-SPECIFIC SETTINGS #
+##########################
+
 if [ "$HOSTNAME" == "dhcp089" ]; then
   PROXY="http://proxy.science.unitn.it:3128/"
   export http_proxy=$PROXY
