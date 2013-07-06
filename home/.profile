@@ -20,7 +20,7 @@ export LC_ALL=en_US.UTF-8
 #HISTORY
 HISTSIZE=10000
 HISTCONTROL=ignoredups:ignorespace
-HISTIGNORE='rm *'
+HISTIGNORE='rm *: sudo rm *'
 shopt -s histappend
 
 
@@ -238,8 +238,11 @@ status() {
 #export PS1="\h@\W\$ "
 #export PS1="┌─[\t]─[\u@\h]\n└──> \w \$ >> "
 #export PS1="[\u@\h] \w\$ "
-PS1="$reset┌─\$(status)─[\t]─[\u@$host]─[\w]\n└──$ptr"
-
+if [[ $LANG =~ UTF-8 ]]; then
+    PS1="$reset┌─\$(status)─[\t]─[\u@$host]─[\w]\n└──$ptr"
+else
+    PS1="$reset[\t][\u@\h]-[\w]\n--> "
+fi
 
 ##########################
 # HOST-SPECIFIC SETTINGS #
