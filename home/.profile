@@ -1,30 +1,51 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# FINE TUNNING
+#################
+# SHELL TUNNING #
+#################
+
 #set * to match all files
 shopt -s dotglob
-
-#PROGRAMS TUNNING
+# HISTORY
+HISTSIZE=10000
+HISTCONTROL=ignoredups:ignorespace
+HISTIGNORE='rm *: sudo rm *'
+shopt -s histappend
+# ENV TUNNING
 export PATH=~/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 export JAVA_HOME=${JAVA_HOME:-/usr/lib/jvm/java-7-openjdk/jre}
 export HISTTIMEFORMAT='%h %d %H:%M:%S'
 export GREP_OPTIONS='--color=auto'
 export GREP_COLOR='1;33'
 export EDITOR=vim
-export PAGER=`which less`
+export PAGER="`which less` -R"
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 
-#HISTORY
-HISTSIZE=10000
-HISTCONTROL=ignoredups:ignorespace
-HISTIGNORE='rm *: sudo rm *'
-shopt -s histappend
+##########################
+# HOST-SPECIFIC SETTINGS #
+##########################
 
+if [ "$HOSTNAME" == "dhcp089" ]; then
+  PROXY="http://proxy.science.unitn.it:3128/"
+  export http_proxy=$PROXY
+  export ftp_proxy=$PROXY
+  export https_proxy=$PROXY
+fi
 
+if [ "$HOSTNAME" == "ux32vd" ]; then
+    #SSH AGENT
+    export SSH_AUTH_SOCK=~/.ssh/ssh-agent
+    ssh-add -l 2>&1 >/dev/null #return status 2 is if ssh-add is unable to contact the authentication agent
+    if [ $? == 2 ]; then
+        pkill -TERM -u $(whoami) -x ssh-agent
+        echo "starting ssh-agent"; rm -f $SSH_AUTH_SOCK; eval `/usr/bin/ssh-agent -a $SSH_AUTH_SOCK`;
+    fi
+    SCREENDEV="eDP1"
 
+fi
 
 #CHANGE CWD TO HOMEDIR. Workarround for ubuntu bug with working dir in
 #x-session
@@ -32,10 +53,6 @@ if [ "`pwd`" == "/" ]; then
     cd
 fi
 
-#FIX XKB LAYOUT SWITCHING
-if [ -n "${XDG_SESSION_PATH}" ]; then
-    setxkbmap -option "grp:shift_caps_switch,caps:ctrl_modifier"
-fi
 
 
 #ALIASES
@@ -58,6 +75,7 @@ alias flvideo='find /proc/`pgrep -f libflashplayer`/fd/ -lname "/tmp/Fla*"'
 alias projector_on='xrandr --output LVDS1 --mode 1024x768 --output VGA1 --auto --same-as LVDS1'
 alias projector_off='xrandr --output LVDS1 --auto --output VGA1 --off'
 
+
 alias sched_1ms="sudo sysctl kernel.sched_min_granularity_ns=100000"
 alias sched_10ms="sudo sysctl kernel.sched_min_granularity_ns=1000000"
 alias sched_100ms="sudo sysctl kernel.sched_min_granularity_ns=10000000"
@@ -68,15 +86,22 @@ alias benches="cd /home/FILEZ/000_BACK/FILEZ/benches/test_SDAG"
 alias site="cd ~exe/repos/utilz/sites/messir.net"
 alias crm="cd ~exe/repos/crm/crm3/"
 alias hpc="cd ~exe/repos/crm/utilz/hpc_bencher/"
-alias p="sudo ping -n -s 100 -i0.1"
 alias abslinux="cd /home/sources/abs/testing/linux/src/"
 alias iwscan="sudo iwlist scan | less"
+p() { addr=$1
+      if [ -z "$addr" ]; then addr="8.8.8.8"; fi
+      sudo ping -n -s 100 -i0.1 $addr
+}
 
-
-
-#MISC
+# X STUFF
+alias hdmi_on="xrandr --output HDMI1 --auto"
+alias hdmi_off="xrandr --output HDMI1 --off; xrandr --output $SCREENDEV --auto"
 # .Xresources handled automatically
 #xrdb -merge ~/.Xdefaults
+# fix xkb layout switching
+if [ -n "${XDG_SESSION_PATH}" ]; then
+    setxkbmap -option "grp:shift_caps_switch,caps:ctrl_modifier"
+fi
 
 
 mkimg() {
@@ -128,6 +153,10 @@ read
 }
 
 
+########
+# MISC #
+########
+
 #from http://stackoverflow.com/questions/282802/how-can-i-view-all-historical-changes-to-a-file-in-svn
 svn_file_hist() {
     url=$1 # current url of file
@@ -169,6 +198,7 @@ countdown() {
 ##########
 # COLORS #
 ##########
+
 # colors from https://wiki.archlinux.org/index.php/Color_Bash_Prompt
 txtblk='\e[0;30m' # Black - Regular
 txtred='\e[0;31m' # Red
@@ -203,6 +233,7 @@ bakpur='\e[45m'   # Purple
 bakcyn='\e[46m'   # Cyan
 bakwht='\e[47m'   # White
 txtrst='\e[0m'    # Text Reset
+
 
 ##########
 # PROMPT #
@@ -244,23 +275,3 @@ else
     PS1="$reset[\t][\u@\h]-[\w]\n--> "
 fi
 
-##########################
-# HOST-SPECIFIC SETTINGS #
-##########################
-
-if [ "$HOSTNAME" == "dhcp089" ]; then
-  PROXY="http://proxy.science.unitn.it:3128/"
-  export http_proxy=$PROXY
-  export ftp_proxy=$PROXY
-  export https_proxy=$PROXY
-fi
-
-if [ "$HOSTNAME" == "ux32vd" ]; then
-    #SSH AGENT
-    export SSH_AUTH_SOCK=~/.ssh/ssh-agent
-    ssh-add -l 2>&1 >/dev/null #return status 2 is if ssh-add is unable to contact the authentication agent
-    if [ $? == 2 ]; then
-        pkill -TERM -u $(whoami) -x ssh-agent
-        echo "starting ssh-agent"; rm -f $SSH_AUTH_SOCK; eval `/usr/bin/ssh-agent -a $SSH_AUTH_SOCK`;
-    fi
-fi
