@@ -202,7 +202,6 @@ pynew() {
   fi
   if [ -f "$name" ]; then
     echo "file already exists"
-    vim $name
   else
     echo -e "#!/usr/bin/env python3\n\n" >> $name
     chmod 755 $name
