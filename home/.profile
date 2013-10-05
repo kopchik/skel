@@ -194,6 +194,21 @@ countdown() {
   for x in `seq $t -1 0`; do echo -n "$x "; sleep 1; done && mplayer -af volume=-10 ~/Downloads/beep-8.mp3
 }
 
+pynew() {
+  name=$1
+  if [ -z "$name" ]; then
+    echo "please provide a name for file"
+    return 1
+  fi
+  if [ -f "$name" ]; then
+    echo "file already exists"
+    vim $name
+  else
+    echo -e "#!/usr/bin/env python3\n\n" >> $name
+    chmod 755 $name
+  fi
+  vim $name
+}
 
 ##########
 # COLORS #
