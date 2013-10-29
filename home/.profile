@@ -72,8 +72,8 @@ alias mes="ssh exe@messir.net -p26000"
 
 alias udperr='watch --differences=cumulative "netstat -s -u | grep \"receive errors\""'
 alias flvideo='find /proc/`pgrep -f libflashplayer`/fd/ -lname "/tmp/Fla*"'
-alias projector_on='xrandr --output LVDS1 --mode 1024x768 --output VGA1 --auto --same-as LVDS1'
-alias projector_off='xrandr --output LVDS1 --auto --output VGA1 --off'
+alias projector_on='xrandr --output eDP1 --mode 1024x768 --output VGA1 --mode 1024x768 --same-as eDP1'
+alias projector_off='xrandr --output eDP1 --auto --output VGA1 --off'
 
 
 alias sched_1ms="sudo sysctl kernel.sched_min_granularity_ns=100000"
@@ -203,7 +203,7 @@ pynew() {
   if [ -f "$name" ]; then
     echo "file already exists"
   else
-    echo -e "#!/usr/bin/env python3\n\n" >> $name
+    echo -e "#!/usr/bin/env python3\n\n\nif __name__ == '__main__':\n  \n  " >> $name
     chmod 755 $name
   fi
   vim $name
