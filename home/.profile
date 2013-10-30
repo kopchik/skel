@@ -35,7 +35,7 @@ if [ "$HOSTNAME" == "dhcp089" ]; then
   export https_proxy=$PROXY
 fi
 
-if [ "$HOSTNAME" == "ux32vd" ]; then
+if [ "$HOSTNAME" == "ux32vd" ]  || [ "$HOSTNAME" == "p1" ]; then
     #SSH AGENT
     export SSH_AUTH_SOCK=~/.ssh/ssh-agent
     ssh-add -l 2>&1 >/dev/null #return status 2 is if ssh-add is unable to contact the authentication agent
