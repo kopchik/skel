@@ -10,7 +10,7 @@ shopt -s dotglob
 # HISTORY
 HISTSIZE=10000
 HISTCONTROL=ignoredups:ignorespace
-HISTIGNORE='rm *: sudo rm *'
+HISTIGNORE='rm *: sudo rm *:cp *'
 shopt -s histappend
 # ENV TUNNING
 export PATH=~/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
@@ -208,6 +208,16 @@ pynew() {
   fi
   vim $name
 }
+
+myfind() {
+  find -name ${1}*;
+}
+
+myifind() {
+  find -iname ${1}*;
+}
+
+
 
 ##########
 # COLORS #
