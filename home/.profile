@@ -10,7 +10,7 @@ shopt -s dotglob
 # HISTORY
 HISTSIZE=10000
 HISTCONTROL=ignoredups:ignorespace
-HISTIGNORE='rm *: sudo rm *'
+HISTIGNORE='rm *: sudo rm *:cp *'
 shopt -s histappend
 # ENV TUNNING
 export PATH=~/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
@@ -35,7 +35,7 @@ if [ "$HOSTNAME" == "dhcp089" ]; then
   export https_proxy=$PROXY
 fi
 
-if [ "$HOSTNAME" == "ux32vd" ]; then
+if [ "$HOSTNAME" == "ux32vd" ]  || [ "$HOSTNAME" == "p1" ]; then
     #SSH AGENT
     export SSH_AUTH_SOCK=~/.ssh/ssh-agent
     ssh-add -l 2>&1 >/dev/null #return status 2 is if ssh-add is unable to contact the authentication agent
@@ -208,6 +208,16 @@ pynew() {
   fi
   vim $name
 }
+
+myfind() {
+  find -name ${1}*;
+}
+
+myifind() {
+  find -iname ${1}*;
+}
+
+
 
 ##########
 # COLORS #
