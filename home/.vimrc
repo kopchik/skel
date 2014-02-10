@@ -16,8 +16,6 @@ sy on
 cmap w!! %!sudo tee > /dev/null %
 
 
-"set fileencodings=koi8-r,utf8
-
 "TIPS
 "ctrl-n/ctrl-p -autocomplete :)
 "
@@ -28,3 +26,5 @@ cmap w!! %!sudo tee > /dev/null %
 "
 "gg=G fix identation
 autocmd BufRead *.hx set filetype=actionscript
+autocmd BufRead *.ls set filetype=ls
+autocmd FileType make setlocal noexpandtab
