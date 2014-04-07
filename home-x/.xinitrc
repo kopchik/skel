@@ -12,6 +12,7 @@ synclient HorizTwoFingerScroll=1
 syndaemon -kd -i0.7 -R
 
 i3status | dzen2 -ta l -y -1 -expand l &
+xautolock -time 1 -locker slock &
 #stalonetray &
 
 /usr/bin/fluxbox
