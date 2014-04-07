@@ -1,0 +1,13 @@
+[app] (name=panel)
+  [Deco]	{NONE}
+[end]
+[app] (name=.*)
+  [Dimensions]	{59% 66%}
+  [Position]	(UPPERLEFT)	{0% 0%}
+  [Deco]	{BORDER}
+[end]
+[app] (name=skype)
+  [Workspace]	{9}
+  [Deco]	{BORDER}
+  [Jump]	{yes}
+[end]

@@ -1,0 +1,13 @@
+#!/bin/sh
+xrandr --dpi 160
+xrdb -merge ./.Xresources &
+
+setxkbmap -option grp:shift_caps_switch,caps:ctrl_modifier
+#xmodmap -e 'keysym XF86Forward = Next'
+#xmodmap -e 'keysym XF86Back = Prior'
+xset r rate 200 60 &
+xset m 0 &
+sudo asus-kbd-backlight off &
+
+sudo modprobe -r bbswitch
+sudo modprobe  bbswitch

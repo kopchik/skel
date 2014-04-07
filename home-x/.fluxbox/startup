@@ -1,0 +1,7 @@
+#!/bin/sh
+xset r rate 200 60
+xset m 0
+fbsetroot -solid black
+exec fluxbox
+# or if you want to keep a log:
+# exec fluxbox -log "/home/exe/.fluxbox/log"
