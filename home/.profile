@@ -213,8 +213,13 @@ myfind() {
   find -name ${1}*;
 }
 
-myifind() {
-  find -iname ${1}*;
+
+orphans() {
+  if [[ ! -n $(pacman -Qdt) ]]; then
+    echo "No orphans to remove."
+  else
+    sudo pacman -Rns $(pacman -Qdtq)
+  fi
 }
 
 
