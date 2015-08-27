@@ -25,36 +25,41 @@ keys = [
     # FOCUS
     Key([alt], 'Tab', lazy.group.next_window(), lazy.window.bring_to_front()),
 
+    # VOLUME
+    Key([win], "comma",   lazy.spawn("amixer set Master 5%-")),
+    Key([win], "period",   lazy.spawn("amixer set Master 5%+")),
+
+
     # LAUNCH PROGRAMS
     Key([win], "x", lazy.spawn(TERM_CMD)),
     Key([win], "d", lazy.spawn("dmenu_run -fn -*-*-*-*-*-*-24-*-*-*-*-*-*-*")),
 
     # BRIGHTNESS AND BACKLIT
-    Key([win], "Up",   lazy.spawn(SCREEN_BRIGHTNESS % '+10%')),
-    Key([win], "Down", lazy.spawn(SCREEN_BRIGHTNESS % '-10%')),
+    Key(["control"], "Up",   lazy.spawn(SCREEN_BRIGHTNESS % '+10%')),
+    Key(["control"], "Down", lazy.spawn(SCREEN_BRIGHTNESS % '-10%')),
 
-    Key([win, shift], "Up",   lazy.spawn("sudo asus-kbd-backlight up")),
-    Key([alt, shift], "Down", lazy.spawn("sudo asus-kbd-backlight down")),
+    Key(["control", shift], "Up",   lazy.spawn("sudo asus-kbd-backlight up")),
+    Key(["control", shift], "Down", lazy.spawn("sudo asus-kbd-backlight down")),
 
     # MISC
     Key([mod], "w", lazy.window.kill()),
     Key([win], "r", lazy.restart()),
     Key([mod, "control"], "q", lazy.shutdown()),
-    Key([mod], "m", lazy.window.toggle_maximize()),
+    Key([mod], "m", lazy.window.enable_maximize()),
     Key([win], "l", lazy.spawn("sflock")),
     Key( [win], "f", lazy.window.toggle_fullscreen()),
 
     # RESIZE
-    Key([alt, shift], "Up", lazy.window.resize_floating(0, -10, 0,0)),
-    Key([alt, shift], "Down", lazy.window.resize_floating(0, 30, 0,0)),
-    Key([alt, shift], "Left", lazy.window.resize_floating(-10, 0, 0,0)),
-    Key([alt, shift], "Right", lazy.window.resize_floating(20, 0, 0,0)),
+    Key([win, shift], "Up", lazy.window.resize_floating(0, -10, 0,0)),
+    Key([win, shift], "Down", lazy.window.resize_floating(0, 30, 0,0)),
+    Key([win, shift], "Left", lazy.window.resize_floating(-10, 0, 0,0)),
+    Key([win, shift], "Right", lazy.window.resize_floating(20, 0, 0,0)),
 
     # MOVE
-    Key([alt], "Up", lazy.window.move_floating(0, -20, 0,0)),
-    Key([alt], "Down", lazy.window.move_floating(0, 20, 0,0)),
-    Key([alt], "Left", lazy.window.move_floating(-20, 0, 0,0)),
-    Key([alt], "Right", lazy.window.move_floating(20, 0, 0,0)),
+    Key([win, alt], "Up", lazy.window.move_floating(0, -20, 0,0)),
+    Key([win, alt], "Down", lazy.window.move_floating(0, 20, 0,0)),
+    Key([win, alt], "Left", lazy.window.move_floating(-20, 0, 0,0)),
+    Key([win, alt], "Right", lazy.window.move_floating(20, 0, 0,0)),
 
     # VIRTUAL DESKTOPS
     Key([win], "Right", lazy.screen.next_group()),
@@ -95,9 +100,9 @@ screens = [
                 #widget.TextBox("default config", name="default"),
                 widget.Systray(),
                 widget.DF(visible_on_warn=False, background="003000", format="{uf:.1f}G"),
-                widget.Clock(format='%Y-%m-%d %a %H:%M'),
                 #widget.Notify(),
                 widget.Battery(update_delay=3.),
+                widget.Clock(format='%Y-%m-%d %a %H:%M'),
                 #widget.ThermalSensor(),
             ],
             40,
@@ -119,7 +124,7 @@ wmname = "LG3D"
 dgroups_key_binder = None
 dgroups_app_rules = []
 main = None
-follow_mouse_focus = True
+follow_mouse_focus = False
 bring_front_click = True
 cursor_warp = True
 auto_fullscreen = False
@@ -132,14 +137,24 @@ def raiser(w):
   w.cmd_bring_to_front()
 
 
+@hook.subscribe.on_move
+def on_resize(window):
+  window.window.warp_pointer(window.width // 2, window.height // 2)
+
+@hook.subscribe.on_resize
+def on_resize(window):
+  window.window.warp_pointer(window.width // 2, window.height // 2)
+
+
 @hook.subscribe.client_managed
 def position(window):
   if window.maximized:
     return
+
   group = window.group
   screen = group.screen
-  x, y = maxx, maxy = 0, 0
 
+  x, y = maxx, maxy = 0, 0
   for w in group.windows:
     if w.maximized:
       continue
@@ -153,7 +168,10 @@ def position(window):
   if y+window.height > 1080: #screen.height:
     y = 100
 
+  # adjust position
   window.tweak_float(x, y)
+  # move cursor
+  window.window.warp_pointer(window.width // 2, window.height // 2)
 
 
 floating_layout = layout.Floating(auto_float_types=[
