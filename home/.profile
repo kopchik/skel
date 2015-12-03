@@ -295,8 +295,8 @@ else
     ptr="> ";
 fi
 
-host="\[\033[${host_color}m\]\h\[$txtrst\]"
 reset="\[$txtrst\]"  # reset colors
+host="\[\033[${host_color}m\]\h${reset}"
 
 status() {
   if [ $? == 0 ]; then
@@ -311,11 +311,11 @@ status() {
 #export PS1="\h@\W\$ "
 #export PS1="┌─[\t]─[\u@\h]\n└──> \w \$ >> "
 #export PS1="[\u@\h] \w\$ "
-if [[ $LANG =~ UTF-8 ]]; then
-    PS1="$reset┌─\$(status)─[\t]─[\u@$host]─[\w]\n└──$ptr"
-else
+#if [[ $LANG =~ UTF-8 ]]; then
+#    PS1="$reset┌─\$(status)─[\t]─[\u@$host]─[\w]\n└──$ptr"
+#else
     PS1="$reset[\t][\u@\h]-[\w]\n--> "
-fi
+#fi
 
 
 
