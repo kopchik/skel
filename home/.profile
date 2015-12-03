@@ -19,12 +19,6 @@ export PATH=~/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 export JAVA_HOME=${JAVA_HOME:-/usr/lib/jvm/java-7-openjdk}
 export HISTTIMEFORMAT='%h %d %H:%M:%S'
 #export GREP_OPTIONS='--color=auto'
-<<<<<<< HEAD
-unset GREP_OPTIONS
-#export GREP_COLOR='1;33'
-=======
-export GREP_COLOR='1;33'
->>>>>>> a21d29cce452498c9a55153cf93e1d579be80b14
 export EDITOR=vim
 export PAGER="`which less` -R"
 export LANG=en_US.UTF-8
