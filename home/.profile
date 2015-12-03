@@ -314,7 +314,7 @@ status() {
 #if [[ $LANG =~ UTF-8 ]]; then
 #    PS1="$reset┌─\$(status)─[\t]─[\u@$host]─[\w]\n└──$ptr"
 #else
-    PS1="$reset[\t][\u@\h]-[\w]\n--> "
+    PS1="$reset[\t][\u@\h]-[\w]\n--$ptr"
 #fi
 
 
