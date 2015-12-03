@@ -14,10 +14,12 @@ HISTIGNORE='rm *: sudo rm *:cp *'
 shopt -s histappend
 # ENV TUNNING
 export PATH=~/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
-export JAVA_HOME=${JAVA_HOME:-/usr/lib/jvm/java-7-openjdk/jre}
+#export JAVA_HOME=${JAVA_HOME:-/usr/lib/jvm/java-7-openjdk/jre}
+export JAVA_HOME=${JAVA_HOME:-/usr/lib/jvm/java-7-openjdk}
 export HISTTIMEFORMAT='%h %d %H:%M:%S'
-export GREP_OPTIONS='--color=auto'
-export GREP_COLOR='1;33'
+#export GREP_OPTIONS='--color=auto'
+unset GREP_OPTIONS
+#export GREP_COLOR='1;33'
 export EDITOR=vim
 export PAGER="`which less` -R"
 export LANG=en_US.UTF-8
@@ -36,6 +38,7 @@ if [ "$HOSTNAME" == "dhcp089" ]; then
 fi
 
 if [ "$HOSTNAME" == "ux32vd" ]  || [ "$HOSTNAME" == "p1" ]; then
+    export PATH=~/github/stlink_new/:$PATH
     #SSH AGENT
     export SSH_AUTH_SOCK=~/.ssh/ssh-agent
     ssh-add -l 2>&1 >/dev/null #return status 2 is if ssh-add is unable to contact the authentication agent
@@ -45,6 +48,8 @@ if [ "$HOSTNAME" == "ux32vd" ]  || [ "$HOSTNAME" == "p1" ]; then
     fi
     SCREENDEV="eDP1"
 
+
+    alias dg="python3 -m dg"
 fi
 
 #CHANGE CWD TO HOMEDIR. Workarround for ubuntu bug with working dir in
@@ -56,14 +61,19 @@ fi
 
 
 #ALIASES
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+function svndiff () { svn diff $@ | colordiff | less -R; }
+function svndwdiff () { svn diff $@ | dwdiff --diff-input -c | less -R; }
+
 alias mystrace='strace -s 256 -f -o /tmp/mystrace'
 alias psl='ps auxww --sort=lstart | sort -r -k3,4 | head -20'
-alias mes="ssh exe@messir.net -p26000"
 
 #alias skype="xhost +local:skype; sudo -H -u skype skype"
 #alias skype="xhost +local:skype; sudo -H -u skype ecryptfs-mount-private; sudo -H -u skype skype"
@@ -81,21 +91,25 @@ alias sched_10ms="sudo sysctl kernel.sched_min_granularity_ns=1000000"
 alias sched_100ms="sudo sysctl kernel.sched_min_granularity_ns=10000000"
 alias sched_1000ms="sudo sysctl kernel.sched_min_granularity_ns=100000000"
 
-alias qua="cd /home/exe/repos/phd/drafts/crm_params"
-alias benches="cd /home/FILEZ/000_BACK/FILEZ/benches/test_SDAG"
-alias site="cd ~exe/repos/utilz/sites/messir.net"
-alias crm="cd ~exe/repos/crm/crm3/"
-alias hpc="cd ~exe/repos/crm/utilz/hpc_bencher/"
-alias abslinux="cd /home/sources/abs/testing/linux/src/"
+alias romashka="mplayer http://81.187.163.34:8282/cam1.asf -cache 32"
+
 alias iwscan="sudo iwlist scan | less"
 p() { addr=$1
       if [ -z "$addr" ]; then addr="8.8.8.8"; fi
       sudo ping -n -s 100 -i0.1 $addr
 }
 
+remove_ssh() {
+  sed -i ${1}d ~/.ssh/known_hosts
+}
+
 # X STUFF
 alias hdmi_on="xrandr --output HDMI1 --auto"
 alias hdmi_off="xrandr --output HDMI1 --off; xrandr --output $SCREENDEV --auto"
+
+alias vga_on="xrandr --output VGA1 --auto"
+alias vga_off="xrandr --output VGA1 --off; xrandr --output $SCREENDEV --auto"
+
 # .Xresources handled automatically
 #xrdb -merge ~/.Xdefaults
 # fix xkb layout switching
@@ -191,7 +205,7 @@ echo $MACADDR
 
 countdown() {
   t=$1
-  for x in `seq $t -1 0`; do echo -n "$x "; sleep 1; done && mplayer -af volume=-10 ~/Downloads/beep-8.mp3
+  for x in `seq $t -1 1`; do echo -n "$x "; sleep 1; done && mplayer -af volume=-10 ~/Downloads/beep-07.mp3
 }
 
 pynew() {
@@ -304,3 +318,10 @@ else
     PS1="$reset[\t][\u@\h]-[\w]\n--> "
 fi
 
+
+
+############################
+# START TMUX AUTOMATICALLY #
+############################
+
+test -z ${TMUX} && tmux
