@@ -1,0 +1,53 @@
+borderwidth 5
+gap 0 25 0 0
+sticky yes
+color activeborder green
+color inactiveborder grey
+
+# SPAWN
+bind 4-x "urxvtcd -rv -fade 50 -fn 'xft:Terminus:size=16' -fb 'xft:Terminus:bold:size=16' -sl 10000 -si -tn xterm"
+bind 4-d "dmenu_run"
+
+# OTHER
+bind 4-r restart
+bind 4-m maximize
+bind 4-w delete
+bind 4-l lock
+
+# MOVE
+moveamount 15
+bind M-Up moveup
+bind M-Down movedown
+bind M-Left moveleft
+bind M-Right moveright
+
+# RESIZE
+bind MS-Up resizeup
+bind MS-Down resizedown
+bind MS-Left resizeleft
+bind MS-Right resizeright
+
+#GROUPS
+bind 4-z grouptoggle
+bind 4S-1 movetogroup1
+bind 4S-2 movetogroup2
+bind 4S-3 movetogroup3
+bind 4S-4 movetogroup4
+bind 4S-5 movetogroup5
+bind 4S-6 movetogroup6
+bind 4S-7 movetogroup7
+bind 4S-8 movetogroup8
+bind 4S-9 movetogroup9
+
+bind 4-Right cyclegroup
+bind 4-Left  rcyclegroup
+
+bind 4-1 grouponly1
+bind 4-2 grouponly2
+bind 4-3 grouponly3
+bind 4-4 grouponly4
+bind 4-5 grouponly5
+bind 4-6 grouponly6
+bind 4-7 grouponly7
+bind 4-8 grouponly8
+bind 4-9 grouponly9

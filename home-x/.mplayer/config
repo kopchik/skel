@@ -1,0 +1,8 @@
+# Write your default config options here!
+
+vo=vaapi
+quiet=true
+#af=volume=10
+#softvol=yes
+#softvol-max=110
+#softvol-max=1000
