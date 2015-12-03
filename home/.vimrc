@@ -25,6 +25,6 @@ cmap w!! %!sudo tee > /dev/null %
 "under the cursor.
 "
 "gg=G fix identation
-autocmd BufRead *.hx set filetype=actionscript
 autocmd BufRead *.ls set filetype=ls
 autocmd FileType make setlocal noexpandtab
+au BufNewFile *.ls 0r ~/.vim/catstorm.ls
