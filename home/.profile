@@ -324,3 +324,7 @@ status() {
 ############################
 
 test -z ${TMUX} && tmux
+
+
+# local stuff
+source ~/.profile_local
