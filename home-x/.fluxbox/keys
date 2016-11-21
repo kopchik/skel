@@ -1,3 +1,6 @@
+Control_R :Exec xdotool click 1
+Menu :Exec xdotool click 1
+
 # click on the desktop to get menus
 OnDesktop Mouse1 :HideMenus
 OnDesktop Mouse2 :WorkspaceMenu
@@ -12,9 +15,11 @@ OnToolbar Mouse4 :PrevWindow {static groups} (iconhidden=no)
 OnToolbar Mouse5 :NextWindow {static groups} (iconhidden=no)
 
 # alt + left/right click to move/resize a window
-OnWindow Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
+OnWindow Mod4 Mouse1 :MacroCmd {Raise} {Focus} {StartMoving}
 OnWindowBorder Move1 :StartMoving
+OnWindow Mod4 Mouse3 :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
 
+OnWindow Mod4 Mod1 Mouse1 :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
 OnWindow Mod1 Mouse3 :MacroCmd {Raise} {Focus} {StartResizing NearestCorner}
 OnLeftGrip Move1 :StartResizing bottomleft
 OnRightGrip Move1 :StartResizing bottomright
@@ -56,21 +61,24 @@ Mod4 D :Exec dmenu_run -fn '-*-*-*-*-*-*-24-*-*-*-*-*-*-*'
 # brightness
 #Mod4 Up   :Exec xbacklight -steps 1 -time 0 +10%
 #Mod4 Down :Exec xbacklight -steps 1 -time 0 -10%
-Mod4 Up   :Exec sudo value.py --set /sys/class/backlight/intel_backlight/brightness --min=10 --max /sys/class/backlight/intel_backlight/max_brightness -- +10%
-Mod4 Down :Exec sudo value.py --set /sys/class/backlight/intel_backlight/brightness --min=10 --max /sys/class/backlight/intel_backlight/max_brightness -- -10%
+Mod4 Up   :Exec value.py --set /sys/class/backlight/intel_backlight/brightness --min=10 --max /sys/class/backlight/intel_backlight/max_brightness -- +10%
+Mod4 Down :Exec value.py --set /sys/class/backlight/intel_backlight/brightness --min=10 --max /sys/class/backlight/intel_backlight/max_brightness -- -10%
+# sound volume
+Mod4 Period :Exec sound_volume up
+Mod4 Comma  :Exec sound_volume down
 
 # kbd backlit
-Mod1 Up   :Exec sudo asus-kbd-backlight up
-Mod1 Down :Exec sudo asus-kbd-backlight down
+Mod1 Up   :Exec asus-kbd-backlight up
+Mod1 Down :Exec asus-kbd-backlight down
 
 # volume settings, using common keycodes
 # if these don't work, use xev to find out your real keycodes
 176 :Exec amixer sset Master,0 1+
 174 :Exec amixer sset Master,0 1-
 160 :Exec amixer sset Master,0 toggle
-XF86AudioRaiseVolume :Exec amixer sset Master,0 1+
-XF86AudioLowerVolume :Exec amixer sset Master,0 1-
-XF86AudioMute :Exec amixer sset Master,0 toggle
+#XF86AudioRaiseVolume :Exec amixer sset Master,0 1+
+#XF86AudioLowerVolume :Exec amixer sset Master,0 1-
+#XF86AudioMute :Exec amixer sset Master,0 toggle
 
 # current window commands
 Mod4 W :Close
@@ -79,6 +87,7 @@ Mod1 F5 :Kill
 Mod4 Control M :Minimize
 Mod4 M :Maximize
 Mod4 Shift M :Fullscreen
+
 
 # open the window menu
 Mod1 space :WindowMenu
@@ -116,7 +125,7 @@ Caps_Lock :Exec setxkbmap -layout us
 Shift Caps_Lock :Exec setxkbmap -layout ru
 
 # hotkeys
-Mod4 L :Exec slock
+Mod4 L :Exec mylock
 
 # toggle decoration
 Mod4 Shift T :ToggleDecor
