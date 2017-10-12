@@ -1,6 +1,9 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
+source ~/.profile_local
+
+
 #################
 # SHELL TUNNING #
 #################
@@ -103,11 +106,16 @@ remove_ssh() {
 }
 
 # X STUFF
-alias hdmi_on="xrandr --output HDMI1 --auto"
-alias hdmi_off="xrandr --output HDMI1 --off; xrandr --output $SCREENDEV --auto"
+export EXT_SCREEN=${EXT_SCREEN:-HDMI-1}
+export INT_SCREEN=${INT_SCREEN:-eDP-1}
 
-alias vga_on="xrandr --output VGA1 --auto"
-alias vga_off="xrandr --output VGA1 --off; xrandr --output $SCREENDEV --auto"
+alias hdmi_on="xrandr --output $EXT_SCREEN --auto"
+alias hdmi_off="xrandr --output $EXT_SCREEN --off; xrandr --output $INT_SCREEN --auto"
+alias hdmi_mirror="xrandr --output $EXT_SCREEN --auto --same-as eDP-1"
+alias hdmi_left="xrandr --output $EXT_SCREEN --auto --left-of eDP-1"
+
+alias vga_on="xrandr --output VGA-1 --auto"
+alias vga_off="xrandr --output VGA-1 --off; xrandr --output $INT_SCREEN --auto"
 
 # .Xresources handled automatically
 #xrdb -merge ~/.Xdefaults
@@ -325,6 +333,3 @@ status() {
 
 test -z ${TMUX} && tmux
 
-
-# local stuff
-source ~/.profile_local
