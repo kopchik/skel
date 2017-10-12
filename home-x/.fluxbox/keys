@@ -58,6 +58,8 @@ Mod4 X :Exec urxvtcd -rv -fade 50 -fn "xft:Terminus:size=16" -fb "xft:Terminus:b
 # open a dialog to run programs
 Mod4 D :Exec dmenu_run -fn '-*-*-*-*-*-*-24-*-*-*-*-*-*-*'
 
+Mod4 V :Exec pavucontrol
+
 # brightness
 #Mod4 Up   :Exec xbacklight -steps 1 -time 0 +10%
 #Mod4 Down :Exec xbacklight -steps 1 -time 0 -10%
