@@ -1,0 +1,8 @@
+#!/bin/bash
+PROGRAM=${SCREENLOCK:-i3lock}
+
+disable_caps
+setxkbmap -layout us
+killall $PROGRAM
+sleep 0.1
+$PROGRAM
