@@ -52,13 +52,15 @@ Mod4 Tab :NextTab
 Mod4 Shift Tab :PrevTab
 
 # open a terminal
-Mod4 X :Exec urxvtcd -rv -fade 50 -fn "xft:Terminus:size=16" -fb "xft:Terminus:bold:size=16" -sl 10000 -si -tn xterm
+Mod4 X :Exec urxvt -rv -fade 50 -fn "xft:Anonymous Pro:size=16" -sl 10000 -si -tn xterm -letsp 1
+#Mod4 X :Exec urxvtcd -rv -fade 50 -fn "xft:Terminus:size=16" -fb "xft:Terminus:bold:size=16" -sl 10000 -si -tn xterm
 #Mod4 X :Exec urxvt -rv -fade 50 -fn 12X24 -fb 12x24 -sl 10000 -si -tn xterm
 
 # open a dialog to run programs
 Mod4 D :Exec dmenu_run -fn '-*-*-*-*-*-*-24-*-*-*-*-*-*-*'
 
 Mod4 V :Exec pavucontrol
+Mod4 A :Exec arandr
 
 # brightness
 #Mod4 Up   :Exec xbacklight -steps 1 -time 0 +10%
