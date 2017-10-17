@@ -20,7 +20,7 @@ export HOME
 export PATH=~/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 #export JAVA_HOME=${JAVA_HOME:-/usr/lib/jvm/java-7-openjdk/jre}
 export JAVA_HOME=${JAVA_HOME:-/usr/lib/jvm/java-7-openjdk}
-export HISTTIMEFORMAT='%h %d %H:%M:%S'
+export HISTTIMEFORMAT='%h %d %H:%M:%S '
 #export GREP_OPTIONS='--color=auto'
 export EDITOR=vim
 export PAGER="`which less` -R"
